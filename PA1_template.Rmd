@@ -132,12 +132,4 @@ xyplot(x ~ Group.1|Group.2,
 The two plots show that during a weekday, there is a higher average step count in the morning around 8am.  
 On the weekend, however, there is an overall higher average step count through the rest of the day.
 
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
+
