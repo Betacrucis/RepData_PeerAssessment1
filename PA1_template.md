@@ -7,26 +7,34 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 unzip('activity.zip')
 activity <- read.csv("activity.csv")
 ```
 
 ## What is mean total number of steps taken per day?
-```{r}
+
+```r
 total_steps_per_day <- aggregate(activity$steps, by=list(activity$date), FUN=sum)
 hist(total_steps_per_day$x, 
      xlab='Total Steps per Day', 
      main ='Histogram of Total Steps per Day')
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+```r
 mean_step <- mean(total_steps_per_day$x,na.rm=TRUE)
 median_steps <- median(total_steps_per_day$x,na.rm=TRUE)
 ```
 
-The mean number of steps per day is `r mean_step`  
-The median number of steps per day is `r median_steps`
+The mean number of steps per day is 1.0766189\times 10^{4}  
+The median number of steps per day is 10765
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 mean_steps_per_interval <- aggregate(activity$steps, by=list(activity$interval), na.rm=TRUE, FUN=mean)
 Max_interval <- mean_steps_per_interval[mean_steps_per_interval$x == max(mean_steps_per_interval$x),]
 plot( mean_steps_per_interval, 
@@ -36,12 +44,15 @@ plot( mean_steps_per_interval,
       main='Average Number of steps through a day')
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 1. Note that this graph includes jumps from the 55 minute to the following hour with an interval of 55 units instead of 5
 
-2. The interval with the maximum average number of steps every day is at `r Max_interval$Group.1`
+2. The interval with the maximum average number of steps every day is at 835
 
 ## Imputing missing values
-```{r}
+
+```r
 missing_rows_count <- sum(!complete.cases(activity))
 
 # to fill the missing values
@@ -69,12 +80,16 @@ total_steps_per_day_filled <- aggregate(activity_missing_filled$steps,
 hist(total_steps_per_day_filled$x, 
      xlab='Total Steps per Day', 
      main ='Histogram of Total Steps per Day with Filled Missing Data')
-mean_step_filled <- mean(total_steps_per_day_filled$x,na.rm=TRUE)
-median_steps_filled <- median(total_steps_per_day_filled$x,na.rm=TRUE)
-
 ```
 
-1. The number of rows with missing values is `r missing_rows_count`  
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+```r
+mean_step_filled <- mean(total_steps_per_day_filled$x,na.rm=TRUE)
+median_steps_filled <- median(total_steps_per_day_filled$x,na.rm=TRUE)
+```
+
+1. The number of rows with missing values is 2304  
 
 2. Strategy to replace missing values:  
 
@@ -88,16 +103,16 @@ median_steps_filled <- median(total_steps_per_day_filled$x,na.rm=TRUE)
 
 4. A histogram of the data with filled missing values is displayed above
 
-The mean number of steps per day with the filled dataset is `r mean_step_filled`  
-The median number of steps per day with the filled dataset is `r median_steps_filled`
+The mean number of steps per day with the filled dataset is 1.0766189\times 10^{4}  
+The median number of steps per day with the filled dataset is 1.0766189\times 10^{4}
 
 Note that the mean and median values remain largely unchanged - and have converged after filling empty data.
 The two histograms have the same shape, but the counts are higher for the histogram that includes the missing values.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
 
+```r
 activity_missing_filled$day_of_week <- weekdays(as.Date(activity_missing_filled$date, "%Y-%m-%d"))
 
 is_weekend <- function( day_of_week) {
@@ -123,8 +138,9 @@ xyplot(x ~ Group.1|Group.2,
        xlab='interval of 5 minutes', 
        ylab='Average number of steps', 
        main='Average Number of steps through a day')
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 1. A new factor is created called **day_type**
 
